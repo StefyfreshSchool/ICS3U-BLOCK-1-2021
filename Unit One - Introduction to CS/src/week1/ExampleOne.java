@@ -8,7 +8,8 @@ public class ExampleOne {
 
     // System.out.println writes to the console.
     // Whatever is in the round brackets goes in the console.
-    System.out.println("Welcome to ICS 3U - AP");
+    System.out.println("Welcome to ICS 3U - AP"); // "Welcome to ICS 3U - AP" is a sequence of charcaters - This is a
+                                                  // String literal
     System.out.println("Welcome to ICS 3U - AP");
     System.out.println("Welcome to ICS 3U - AP");
     System.out.println("Welcome to ICS 3U - AP");
