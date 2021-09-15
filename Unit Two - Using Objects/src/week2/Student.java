@@ -23,4 +23,8 @@ public class Student {
     grade++;
   }
 
+  public void displayGrade() {
+    System.out.println(grade);
+  }
+
 }
