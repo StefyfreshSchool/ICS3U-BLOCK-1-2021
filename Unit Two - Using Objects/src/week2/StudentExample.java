@@ -34,8 +34,18 @@ public class StudentExample {
     alan.displayAverage();
     alan.addTest(67);
     alan.displayAverage();
+    // double avg = alan.getAverage(); not used (called getAverage inline on the
+    // next line)
+    System.out.println(alan.getName() + " has an average of " + alan.getAverage());
 
     // alan.numMarks = 7; don't have access to primate members (not visible)
+
+    alan.displayName();
+    alan.displayName("Hello");
+
+    Student stefano = new Student("Stefano", "876273");
+    stefano.displayName();
+    stefano.displayGrade();
 
   }
 }
