@@ -3,11 +3,18 @@ package week3;
 public class PracticeProblems {
    public static void main(String[] args) {
       questionA();
+      questionB();
+
       question5();
    }
 
    public static void questionA() {
       int num = (int) (Math.random() * 100) + 1;
+      System.out.println(num);
+   }
+
+   public static void questionB() {
+      int num = (int) (Math.random() * 101) + -50;
       System.out.println(num);
    }
 
