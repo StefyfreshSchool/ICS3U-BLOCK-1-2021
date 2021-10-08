@@ -15,5 +15,9 @@ public class ExampleFive {
 
     System.out.println(average);
 
+    int min = 5;
+    double sec = 3.33211;
+
+    System.out.printf("%d:%06.3f", min, sec);
   }
 }
