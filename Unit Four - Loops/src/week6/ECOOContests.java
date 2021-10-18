@@ -24,6 +24,7 @@ public class ECOOContests {
          System.out.print(end);
       }
       System.out.println("*");
+
    }
 
    private static void diamonds(String str) {
