@@ -26,11 +26,14 @@ public class ThreeCardPower {
       final int MAX_BET = 100;
       Scanner in = new Scanner(System.in);
       int wallet = 500;
-      // int bet = getBet(in, wallet, MIN_BET, MAX_BET);
+      int bet = getBet(in, wallet, MIN_BET, MAX_BET);
+
       String playerHand = "";
+
       for (int i = 0; i < MAX_CARDS; i++) {
          playerHand += getCard(playerHand) + " ";
       }
+
       System.out.println(playerHand);
 
       playerHand = discard(in, playerHand);
@@ -50,12 +53,17 @@ public class ThreeCardPower {
       } else {
          String cardToReplace = getCardsToDiscard(in, numCardsToReplace, playerHand);
          int space = cardToReplace.indexOf(" ");
-         String card1 = cardToReplace.substring(0, space);
-         String card = getCard(playerHand);
+         String card1 = "";
+         if (space == -1)
+            card1 = cardToReplace;
+         else
+            card1 = cardToReplace.substring(0, space);
+
+         String card = getCard(playerHand + temp);
          playerHand = playerHand.replace(card1, card);
          if (numCardsToReplace == 2) {
             String card2 = cardToReplace.substring(space + 1);
-            card = getCard(playerHand + cardToReplace);
+            card = getCard(playerHand + cardToReplace + temp);
             playerHand = playerHand.replace(card2, card);
          }
       }
@@ -69,35 +77,48 @@ public class ThreeCardPower {
       while (!validInput) {
          System.out.println("Please enter the cards to replace: (ex. 7H KD): ");
          cards = in.nextLine().toUpperCase();
-
-         if ((numCardsToReplace == 1) && (playerHand.indexOf(cards) < 0))
+         if (countOccurences(cards, " ") != numCardsToReplace - 1) {
+            System.out.println("You must choose " + numCardsToReplace + " cards.");
+         } else if ((numCardsToReplace == 1) && (playerHand.indexOf(cards) < 0))
             System.out.println("You don't have a " + cards);
          else if ((numCardsToReplace == 1) && (playerHand.indexOf(cards) >= 0))
             validInput = true;
          else if (numCardsToReplace == 2) {
             int space = cards.indexOf(" ");
-            if (space < 0) {
-               System.out.println("You must choose two cards.");
-            } else {
-               String card1 = cards.substring(0, space);
-               String card2 = cards.substring(space + 1);
-               if (VALID_CARDS.indexOf(card1) < 0)
-                  System.out.println("Not a valid card: " + card1);
-               else if (VALID_CARDS.indexOf(card2) < 0)
-                  System.out.println("Not a valid card: " + card2);
-               if (cards.indexOf(card1) < 0)
-                  System.out.println("You don't have a " + card1);
-               else if (cards.indexOf(card2) < 0)
-                  System.out.println("You don't have a " + card2);
-               else if (card1.equals(card2))
-                  System.out.println("You cannot discard the same card.");
-               else
-                  validInput = true;
-            }
+
+            String card1 = cards.substring(0, space);
+            String card2 = cards.substring(space + 1);
+            if (VALID_CARDS.indexOf(card1) < 0)
+               System.out.println("Not a valid card: " + card1);
+            else if (VALID_CARDS.indexOf(card2) < 0)
+               System.out.println("Not a valid card: " + card2);
+            else if (playerHand.indexOf(card1) < 0)
+               System.out.println("You don't have a " + card1);
+            else if (playerHand.indexOf(card2) < 0)
+               System.out.println("You don't have a " + card2);
+            else if (playerHand.equals(card2))
+               System.out.println("You cannot discard the same card.");
+            else
+               validInput = true;
          }
+
       }
 
       return cards;
+
+   }
+
+   private static int countOccurences(String str, String str2) {
+      int count = 0;
+      if (str2.length() > str.length())
+         return 0;
+
+      for (int i = 0; i < str.length(); i++) {
+         String substr = str.substring(i, i + str2.length());
+         if (str2.equals(substr))
+            count++;
+      }
+      return count;
 
    }
 
