@@ -14,6 +14,16 @@ public class ThreeCardPower {
    private static final String QUEEN = "Q";
    private static final String JACK = "J";
    private static final int MAX_CARDS = 3;
+   private static final int PLAYER_WINS = 1;
+   private static final int DEALER_WINS = 2;
+   private static final int TIE = 3;
+
+   private static final int HIGH_CARD = 1;
+   private static final int PAIR = 2;
+   private static final int THREE_OF_A_KIND = 3;
+   private static final int STRAIGHT = 4;
+   private static final int FLUSH = 5;
+   private static final int STRAIGHT_FLUSH = 6;
 
    private static boolean playAgain(Scanner in) {
       boolean validInput = false;
@@ -73,14 +83,78 @@ public class ThreeCardPower {
       System.out.println("Player: " + playerHand);
       System.out.println("Dealer: " + "XX XX XX");
       if (!fold(in)) {
-         bet = getBet(in, wallet, minBet, maxBet);
+         bet += getBet(in, wallet, minBet, maxBet);
          playerHand = discard(in, playerHand);
          System.out.println(playerHand);
       } else {
          System.out.println("Player folds.");
          wallet -= bet;
+         return wallet;
       }
 
+      if (compareHands(playerHand, dealerHand) == PLAYER_WINS) {
+         System.out.println("Player Wins!");
+         wallet += bet;
+      } else if (compareHands(playerHand, dealerHand) == DEALER_WINS) {
+         System.out.println("Dealer Wins!");
+         wallet -= bet;
+      } else {
+         System.out.println("Tie");
+      }
+
+      return wallet;
+
+   }
+
+   private static int compareHands(String playerHand, String dealerHand) {
+      if (getHand(playerHand) > getHand(dealerHand))
+         return PLAYER_WINS;
+      else if (getHand(dealerHand) > getHand(playerHand))
+         return DEALER_WINS;
+      else {
+         if (getHighCard(playerHand) > getHighCard(dealerHand))
+            return PLAYER_WINS;
+         else if (getHighCard(playerHand) < getHighCard(dealerHand))
+            return DEALER_WINS;
+         else
+            return TIE;
+      }
+
+   }
+
+   private static int getHand(String cards) {
+      if (isFlush(cards) && isStraight(cards))
+         return STRAIGHT_FLUSH;
+      else if (isFlush(cards))
+         return FLUSH;
+      else if (isStraight(cards))
+         return STRAIGHT;
+      else if (isThreeOfAKind(cards))
+         return THREE_OF_A_KIND;
+      else if (isPair(cards))
+         return PAIR;
+      else
+         return HIGH_CARD;
+   }
+
+   private static boolean isPair(String cards) {
+      return false;
+   }
+
+   private static boolean isThreeOfAKind(String cards) {
+      return false;
+   }
+
+   private static boolean isStraight(String cards) {
+      return false;
+   }
+
+   private static boolean isFlush(String cards) {
+      return false;
+   }
+
+   private static int getHighCard(String card) {
+      return 0;
    }
 
    private static boolean fold(Scanner in) {
