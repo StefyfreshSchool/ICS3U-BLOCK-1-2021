@@ -15,6 +15,24 @@ public class ThreeCardPower {
    private static final String JACK = "J";
    private static final int MAX_CARDS = 3;
 
+   private static boolean playAgain(Scanner in) {
+      boolean validInput = false;
+
+      while (!validInput) {
+         System.out.println("Do you want to play again ([Y]es / [N]o)");
+         String answer = in.nextLine().toUpperCase();
+         if (answer.equals("YES") || answer.equals("Y"))
+            return true;
+         else if (answer.equals("NO") || answer.equals("N")) {
+            return false;
+         } else {
+            System.out.println("Invalid Input: Yes or No only!");
+         }
+      }
+
+      return false;
+   }
+
    public static void main(String[] args) {
       // 7H -> 7 of Hearts
       // AD -> Ace of Diamonds
@@ -26,18 +44,61 @@ public class ThreeCardPower {
       final int MAX_BET = 100;
       Scanner in = new Scanner(System.in);
       int wallet = 500;
-      int bet = getBet(in, wallet, MIN_BET, MAX_BET);
+      boolean playAgain = true;
+      while (playAgain) {
+         wallet = playPokerHand(in, wallet, MIN_BET, MAX_BET);
+         if (wallet >= MIN_BET * 2)
+            playAgain = playAgain(in);
+         else {
+            System.out.println("You don't have enough money to play again!");
+            playAgain = false;
+         }
+      }
+   }
+
+   private static int playPokerHand(Scanner in, int wallet, int minBet, int maxBet) {
+      int bet = getBet(in, wallet, minBet, maxBet);
 
       String playerHand = "";
+      String dealerHand = "";
 
       for (int i = 0; i < MAX_CARDS; i++) {
          playerHand += getCard(playerHand) + " ";
       }
 
-      System.out.println(playerHand);
+      for (int i = 0; i < MAX_CARDS; i++) {
+         dealerHand += getCard(playerHand + dealerHand) + " ";
+      }
 
-      playerHand = discard(in, playerHand);
-      System.out.println(playerHand);
+      System.out.println("Player: " + playerHand);
+      System.out.println("Dealer: " + "XX XX XX");
+      if (!fold(in)) {
+         bet = getBet(in, wallet, minBet, maxBet);
+         playerHand = discard(in, playerHand);
+         System.out.println(playerHand);
+      } else {
+         System.out.println("Player folds.");
+         wallet -= bet;
+      }
+
+   }
+
+   private static boolean fold(Scanner in) {
+      boolean validInput = false;
+
+      while (!validInput) {
+         System.out.println("What would you like to do ([F]old / [D]iscard): ");
+         String answer = in.nextLine().toUpperCase();
+         if (answer.equals("FOLD") || answer.equals("F"))
+            return true;
+         else if (answer.equals("DISCARD") || answer.equals("D")) {
+            return false;
+         } else {
+            System.out.println("Invalid Input: Discard or Fold only!");
+         }
+      }
+
+      return false;
    }
 
    private static String discard(Scanner in, String playerHand) {
