@@ -119,7 +119,6 @@ public class ThreeCardPower {
          else
             return TIE;
       }
-
    }
 
    private static int getHand(String cards) {
