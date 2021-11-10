@@ -3,6 +3,10 @@ package week8;
 public class DiceGame {
    public static void main(String[] args) {
       Die die1 = new Die();
+      String str = "hi";
+
+      if (str.equals(die1))
+         System.out.println("Yes");
       Die die2 = new Die();
 
       int numPairs = 0;
