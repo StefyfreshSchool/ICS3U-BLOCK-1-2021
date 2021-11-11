@@ -23,12 +23,12 @@ package week10;
 public class DoubleArraySequence {
    private static final int DEFAULT_CAPACITY = 10;
    // Invariant of the DoubleArraySequence class:
-   // 1. The number of elements in the seqeunces is in the instance variable
+   // 1. The number of elements in the sequences is in the instance variable
    // manyItems.
    // 2. For an empty sequence (with no elements), we do not care what is
    // stored in any of data; for a non-empty sequence, the elements of the
    // sequence are stored in data[0] through data[manyItems-1], and we
-   // don�t care what�s in the rest of data.
+   // don't care what's in the rest of data.
    // 3. If there is a current element, then it lies in data[currentIndex];
    // if there is no current element, then currentIndex equals manyItems.
    private double[] data;
@@ -47,7 +47,9 @@ public class DoubleArraySequence {
     **/
    // Created DoubleArraySequence
    public DoubleArraySequence() {
-
+      manyItems = 0;
+      currentIndex = 0;
+      data = new double[DEFAULT_CAPACITY];
    }
 
    /**
@@ -65,7 +67,12 @@ public class DoubleArraySequence {
     **/
    // Get empty sequence with a specified Capacity
    public DoubleArraySequence(int initialCapacity) {
+      if (initialCapacity < 0)
+         throw new IllegalArgumentException("Initial Capacity must be non-negative.");
 
+      manyItems = 0;
+      currentIndex = 0;
+      data = new double[initialCapacity];
    }
 
    /**
@@ -77,7 +84,10 @@ public class DoubleArraySequence {
     **/
    // The new double array sequence is a copy of the DoubleArraySequence src.
    public DoubleArraySequence(DoubleArraySequence src) {
+      this.manyItems = src.manyItems;
+      this.currentIndex = src.currentIndex;
 
+      // copy src.data into this.data
    }
 
    /**
@@ -155,7 +165,10 @@ public class DoubleArraySequence {
     *                                  so advance may not be called.
     **/
    public void advance() {
+      if (!isCurrent())
+         throw new IllegalStateException("No Current Element!");
 
+      currentIndex++;
    }
 
    /**
@@ -202,7 +215,7 @@ public class DoubleArraySequence {
     * @return the current capacity of this sequence
     **/
    public int getCapacity() {
-      return -1;
+      return data.length;
    }
 
    /**
@@ -215,7 +228,9 @@ public class DoubleArraySequence {
     *                                  so getCurrent may not be called.
     **/
    public double getCurrent() {
-      return 0;
+      if (!isCurrent())
+         throw new IllegalStateException("No Current Element");
+      return data[currentIndex];
    }
 
    /**
@@ -228,7 +243,7 @@ public class DoubleArraySequence {
     **/
    public boolean isCurrent() { // see if sequence has a specified current element
 
-      return true;
+      return currentIndex != manyItems;
    }
 
    /**
@@ -255,7 +270,7 @@ public class DoubleArraySequence {
     **/
    public int size() { // Determine the number of elements in this sequence.
 
-      return -1;
+      return manyItems;
    }
 
    /**
@@ -267,7 +282,7 @@ public class DoubleArraySequence {
     *                current element).
     **/
    public void start() {
-
+      currentIndex = 0;
    }
 
    /**
